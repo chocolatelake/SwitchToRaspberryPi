@@ -59,9 +59,9 @@ SwitchReport report;
 void setup() {
   // ★重要: ここで身分証明書を設定します
   // 0x0092 (POKKEN) は実績のある安定したIDです
-  USBDevice.setID(0x0F0D, 0x0092);
-  USBDevice.setProductDescriptor("POKKEN CONTROLLER");
-  USBDevice.setManufacturerDescriptor("HORI CO.,LTD.");
+  TinyUSBDevice.setID(0x0F0D, 0x0092);
+  TinyUSBDevice.setProductDescriptor("POKKEN CONTROLLER");
+  TinyUSBDevice.setManufacturerDescriptor("HORI CO.,LTD.");
   
   pinMode(LED_PIN, OUTPUT);
   for(int i=0; i<3; i++) {
@@ -74,17 +74,15 @@ void setup() {
   usb_hid.setStringDescriptor("POKKEN CONTROLLER");
   usb_hid.begin();
 
-  while( !USBDevice.mounted() ) delay(1);
+  while( !TinyUSBDevice.mounted() ) delay(1);
 
-  Serial1.setRX(1);
-  Serial1.setTX(0);
-  Serial1.begin(9600);
+  Serial.begin(9600);
   resetReport();
 }
 
 void loop() {
-  if (Serial1.available() > 0) {
-    char cmd = Serial1.read();
+  if (Serial.available() > 0) {
+    char cmd = Serial.read();
     digitalWrite(LED_PIN, HIGH);
 
     switch (cmd) {
