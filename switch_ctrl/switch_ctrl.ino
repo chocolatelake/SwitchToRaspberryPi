@@ -76,13 +76,15 @@ void setup() {
 
   while( !TinyUSBDevice.mounted() ) delay(1);
 
-  Serial.begin(9600);
+  Serial1.setRX(1);
+  Serial1.setTX(0);
+  Serial1.begin(9600);
   resetReport();
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    char cmd = Serial.read();
+  if (Serial1.available() > 0) {
+    char cmd = Serial1.read();
     digitalWrite(LED_PIN, HIGH);
 
     switch (cmd) {
@@ -109,6 +111,19 @@ void loop() {
       case 'K': moveStick(128, 255); break; // 下
       case 'J': moveStick(0, 128); break;   // 左
       case 'L': moveStick(255, 128); break; // 右
+
+      // 移動 (左スティック斜め)
+      case '6': moveStick(0, 0); break;     // 左上
+      case '7': moveStick(255, 0); break;   // 右上
+      case '8': moveStick(0, 255); break;   // 左下
+      case '9': moveStick(255, 255); break; // 右下
+
+      // 同時押しボタン
+      case '5': press(BTN_L | BTN_R); break; // LR
+      case 't': press(BTN_X | BTN_Y); break; // XY
+      case 'y': press(BTN_X | BTN_A); break; // XA
+      case 'u': press(BTN_Y | BTN_B); break; // YB
+      case 'i': press(BTN_A | BTN_B); break; // AB
 
       // 十字キー
       case 'U': pressHat(HAT_TOP); break;
